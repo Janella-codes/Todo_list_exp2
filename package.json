@@ -2,9 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "prisma generate && next build",
-    "start": "next start",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "@picocss/pico": "^2.0.6",
