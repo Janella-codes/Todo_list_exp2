@@ -31,6 +31,26 @@ export const addTodo = async (formData: FormData) => {
   revalidatePath("/");
 }
 
+interface params {
+  id: number;
+}
+
+
+export const deleteTodo1 = async( { id }: params) => {
+
+
+  try {
+    await prisma.todo.delete({
+      where: { id },
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  revalidatePath("/");
+
+}
+
 
 
 
@@ -83,7 +103,7 @@ export async function deleteTodo(
 
   try {
     await sqlConnect`
-      DELETE FROM todos
+      DELETE FROM todo
       WHERE id = ${data.id};
     `;
 
