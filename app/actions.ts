@@ -1,10 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import postgres from "postgres";
+import sql from "postgres";
 import { z } from "zod";
+import  FormData from "next";
+import prisma from "@/lib/prisma";
 
-let sql = postgres(process.env.DATABASE_URL || process.env.POSTGRES_URL!, {
+let sqlConnect = sql(process.env.DATABASE_URL || process.env.POSTGRES_URL!, {
   ssl: "allow",
 });
 
@@ -12,6 +14,25 @@ let sql = postgres(process.env.DATABASE_URL || process.env.POSTGRES_URL!, {
 //   id SERIAL PRIMARY KEY,
 //   text TEXT NOT NULL
 // );
+
+export const addTodo = async (formData: FormData) => {
+  const content = formData.get("content");
+
+  try {
+  await prisma.todo.create({
+    data: {
+     content: content as string,
+    },
+  });
+  } catch (e) {
+    console.error(e);
+  }
+
+  revalidatePath("/");
+}
+
+
+
 
 export async function createTodo(
   prevState: {
@@ -33,7 +54,7 @@ export async function createTodo(
   const data = parse.data;
 
   try {
-    await sql`
+    await sqlConnect`
       INSERT INTO todos (text)
       VALUES (${data.todo})
     `;
@@ -61,7 +82,7 @@ export async function deleteTodo(
   });
 
   try {
-    await sql`
+    await sqlConnect`
       DELETE FROM todos
       WHERE id = ${data.id};
     `;

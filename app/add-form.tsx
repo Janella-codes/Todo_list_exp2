@@ -1,33 +1,53 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
-import { createTodo } from "@/app/actions";
+import { addTodo } from "@/app/actions";
+import { useOptimistic, useRef } from "react";
+import Button from "./components/Button";
 
-const initialState = {
-  message: "",
+type Todo = {
+  id: number;
+  content: string;
 };
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
+type TodosComponentProps = {
+  todos: Todo[];
+};
+
+export default function FormNew({ 
+  todos 
+}: TodosComponentProps) {
+  const ref = useRef<HTMLFormElement>(null);
+
+  const [optimisticTodos, addOptimisticTodo] = useOptimistic(todos, (state, newTodo: Todo) => {
+    return [...state, newTodo]
+  });
 
   return (
-    <button type="submit" aria-disabled={pending}>
-      Add
-    </button>
-  );
-}
+    <>
+    <form ref={ref} action={async formData => {
+      ref.current?.reset();
+      addOptimisticTodo({
+        id: Math.random(),
+        content: formData.get("content") as string
+      })
+        await addTodo(formData);
+          }}
+        className="flex flex-col w-[300px] my-16"
+        >
+          <input 
+            type="text"
+            name="content" 
+            placeholder="Add a todo" 
+            required
+          />
+          <Button />
+        </form>
+        <ul className='list-disc'>
+        {optimisticTodos.map((todo) => (
+            <li key={todo.id}>{todo.content}</li>
+        ))}
+        </ul>
+    </>
+);
 
-export function AddForm() {
-  const [state, formAction] = useFormState(createTodo, initialState);
-
-  return (
-    <form action={formAction}>
-      <label htmlFor="todo">Enter Task</label>
-      <input type="text" id="todo" name="todo" required />
-      <SubmitButton />
-      <p aria-live="polite" className="sr-only" role="status">
-        {state?.message}
-      </p>
-    </form>
-  );
 }
