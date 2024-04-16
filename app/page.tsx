@@ -1,5 +1,5 @@
 import sql from "postgres";
-import prisma  from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import TodoComponent from "@/app/components/todos-component";
 
 let sqlConnect = sql(process.env.DATABASE_URL || process.env.POSTGRES_URL!, {
