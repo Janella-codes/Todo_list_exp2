@@ -75,3 +75,10 @@ li {
   white-space: nowrap;
   border-width: 0;
 }
+
+.links {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

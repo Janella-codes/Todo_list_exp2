@@ -16,17 +16,11 @@ return (
   <>
     
   <main className='flex min-h-screen flex-col items-center w-full p-24'>
+    <Link className="links" href={"./page2"}> <h1>Delete</h1> </Link>
       <h1 className='text-4xl font-bold'>Todos</h1>
       <TodoComponent  todos={todos}/>
 
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>
-            {todo.content}
-            <DeleteForm id={todo.id} todo={todo.content} />
-          </li>
-        ))}
-      </ul>
+      
   </main>
   </>
 );
