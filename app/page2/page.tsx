@@ -16,7 +16,7 @@ return (
   <>
     
   <main className='flex min-h-screen flex-col items-center w-full p-24'>
-    <Link className="links" href={"/"}> <h1>Home</h1> </Link>
+    <Link className="links" href={"/"}> <h1>Add Todo</h1> </Link>
       <h1 className='text-4xl font-bold'>Todos</h1>
       <ul>
         {todos.map((todo) => (

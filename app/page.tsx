@@ -14,9 +14,12 @@ export default async function Page() {
 
 return (
   <>
+
     
   <main className='flex min-h-screen flex-col items-center w-full p-24'>
+  <Link className="links" href="https://janellasplace.com"><h1>Home</h1></Link>
     <Link className="links" href={"./page2"}> <h1>Delete</h1> </Link>
+
       <h1 className='text-4xl font-bold'>Todos</h1>
       <TodoComponent  todos={todos}/>
 
